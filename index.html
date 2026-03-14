@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FarmFarm</title>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    background:#87ceeb;
+    font-family:sans-serif;
+}
+canvas{
+    display:block;
+}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
 
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+let player = {
+    x: 200,
+    y: 200,
+    size: 40,
+    speed: 4
+};
+
+const keys = {};
+
+window.addEventListener("keydown", e => keys[e.key] = true);
+window.addEventListener("keyup", e => keys[e.key] = false);
+
+function update(){
+    if(keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
+    if(keys["s"] || keys["ArrowDown"]) player.y += player.speed;
+    if(keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
+    if(keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+}
+
+function draw(){
+    ctx.fillStyle = "#87ceeb";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(player.x, player.y, player.size, player.size);
+
+    ctx.fillStyle = "black";
+    ctx.font = "20px sans-serif";
+    ctx.fillText("FarmFarm demo – move with WASD or arrows",20,30);
+}
+
+function loop(){
+    update();
+    draw();
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+</body>
+</html>
